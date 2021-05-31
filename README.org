@@ -2,7 +2,8 @@
 #+author: Ulysses Carlos
 #+date: <2021-05-31 Mon>
 
-This repository contains solutions to some problems from Bjarne Stroustrup's Principles of Programming Using C++ (2014). These solutions were written on a Linux machine, but should work on Windows and macOS since it only uses the standard C++ library.
+This repository contains solutions to some problems from Bjarne Stroustrup's Principles of Programming Using C++ (2014).
+These solutions were written on a Linux machine, but should work on Windows and macOS since it only uses the standard C++ library.
 
 ** Requirements
 + A C++ Compiler that supports C++17
@@ -13,5 +14,5 @@ You can open this project in CLion and build it through the build option or you 
 
 #+begin_src bash
   cmake .
-  make
+  make # Or any other file created by cmake
 #+end_src

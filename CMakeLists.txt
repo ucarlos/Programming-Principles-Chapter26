@@ -3,4 +3,5 @@ project(Chapter26)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Chapter26 main.cpp)
+add_executable(SimpleBinarySearch Simple_Binary_Search.cc)
+add_executable(BinarySearch Binary_Search.cc)

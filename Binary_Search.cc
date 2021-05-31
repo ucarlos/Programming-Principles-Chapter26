@@ -45,7 +45,7 @@ template<class T> typename std::vector<T>::iterator my_binary_search(std::vector
 int main(void) {
 	vector<string> list;
 
-	const string filename = "ExampleInput.txt";
+	const string filename = "../ExampleInput.txt";
 	ifstream input{filename, ios_base::in};
 	if (!input) {
 		cerr << "Error: Cannot open \"" << filename << "\"\n";
@@ -63,8 +63,11 @@ int main(void) {
 	
 	// Sort the strings and remove duplicate items.
 	sort(list.begin(), list.end());
-	unique(list.begin(), list.end()); 
+	auto it = unique(list.begin(), list.end()); 
 
+	// Now resize the vector to fit
+	list.resize(std::distance(list.begin(), it));
+	
 	cout << "After sorting:\n";
 	for (const string &i : list)
 		cout << "\t" << i << endl;
