@@ -1,0 +1,12 @@
+#+title: Chapter 26 Review
+#+author: Ulysses Carlos
+#+date: <2021-05-30 Sun>
+#+OPTIONS: toc:nil
+#+latex_class_options: [12pt]
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+#+LaTeX_HEADER: \usepackage[T1]{fontenc}
+#+LaTeX_HEADER: \usepackage{mathpazo}
+#+LaTeX_HEADER: \linespread{1.05}
+#+LaTeX_HEADER: \usepackage[scaled]{helvet}
+#+LaTeX_HEADER: \usepackage{courier}
+* Problems
