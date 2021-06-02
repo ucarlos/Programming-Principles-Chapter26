@@ -10,3 +10,24 @@
 #+LaTeX_HEADER: \usepackage[scaled]{helvet}
 #+LaTeX_HEADER: \usepackage{courier}
 * Problems
+** Make a list of applications, each with a brief explanation of the worst thing that can happen if there is a bug; e.g., airplane control — crash: 231 people dead; $500M equipment loss.
+** Why don’t we just prove our programs correct?
+** What’s the difference between unit testing and system testing?
+** What is regression testing and why is it important?
+** What is the purpose of testing?
+** Why doesn’t binary_search just check its requirements?
+** If we can’t check for all possible errors, what kinds of errors do we primarily look for?
+** Where are bugs most likely to occur in code manipulating a sequence of elements?
+** Why is it a good idea to test for large values?
+** Why do we often represent tests as data rather than as code?
+** Why and when would we use lots of tests based on random values?    
+** Why is it hard to test a program using a GUI?
+** What is needed to test a “unit” in isolation?
+** What is the connection between testability and portability?
+** What makes testing a class harder than testing a function?
+** Why is it important that tests be repeatable?
+** What can a tester do when finding that a “unit” relies on unchecked assumptions (pre-conditions)?
+** What can a designer/implementer do to improve testing?
+** How does testing differ from debugging?
+** When does performance matter?
+** Give two (or more) examples of how to (easily) create bad performance problems.
