@@ -15,9 +15,18 @@
 #include <algorithm>
 #include <ctime>
 using namespace std;
-
 using distribution = std::uniform_int_distribution<unsigned>;
 
+
+/**
+ * Populates and then sorts a vector of a specified size, displaying the time
+ * for the action to complete.
+ *
+ * @param vec Reference to a vector<string>
+ * @param dist Reference to a uniform_int_distribution
+ * @param merse Reference to a merse Random number generator
+ * @param size Number of string objects to populate and sort.
+ */
 void sort_time(vector<string> &vec, distribution &dist,
 			   std::mt19937 &merse, const int size) {
 	size_t string_size;
