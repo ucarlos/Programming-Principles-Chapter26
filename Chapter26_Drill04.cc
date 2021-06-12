@@ -41,8 +41,10 @@ void populate_vector(vector<string> &vec, ifstream &input, int size) {
 template<class Iter> void write_to_file(ostream &os, Iter first, Iter last) {
 	os << "{ ";
 		
-	while (first != last)
-		os << *first++ << " ";
+	while (first != last) {
+		os << *first << " ";
+		++first;
+	}
 
 	os << "}\n";
 }
@@ -66,7 +68,7 @@ int main(void) {
 	cout << "Large SEQUENCE:\n";
 	vector<string> vec;
 	
-	distribution dist{1, 1000};
+	distribution dist{1, 2500};
 	int random_size = random_int(dist);
 	
 	populate_vector(vec, file, random_size);
@@ -78,19 +80,19 @@ int main(void) {
 	for (int i = 0; i < 10; i++) {
 		vec.clear();
 		random_size = random_int(dist);
-		
 
+		file.clear();
+		file.seekg(0);
 		populate_vector(vec, file, random_size);
+		vec.shrink_to_fit();
 		random_shuffle(vec.begin(), vec.end());
 		write_to_file(output, vec.begin(), vec.end());
-		file.seekg(0);
+
 	}
 
-	sort(vec.begin(), vec.end());
-	unique(vec.begin(), vec.end());
-	vec.shrink_to_fit();
-	dist = distribution{0, (int)vec.size() - 1};
 
+	sort(vec.begin(), vec.end());
+	dist = distribution{0, static_cast<int>(vec.size() - 1)};
 	// Ten sequences with 0, 1, 2 . . . 9 random elements (but still ordered)
 	cout << "Ten sequences with 0, 1, 2 . . . 9 random elements (but still ordered)\n";
 	set<string> s;	
@@ -98,8 +100,8 @@ int main(void) {
 		s.clear();
 		
 		for (int j = 0; j < i; j++) {
-			int rand = random_int(dist);
-			s.insert(vec.at(rand));			
+			int i = random_int(dist);
+			s.insert(vec.at(i));
 		}
 		
 		write_to_file(output, s.begin(), s.end());		   		   	   
