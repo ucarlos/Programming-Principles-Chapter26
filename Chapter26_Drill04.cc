@@ -5,6 +5,21 @@
  * Chapter26_Drill04.cc
  * Repeat these tests for sequences of strings, such as
  * { Bohr Darwin Einstein Lavoisier Newton Turing }
+ *
+ * PROTIPS:
+ * 1. Vector's constructor with a int argument creates an vector with n
+ *    default elements rather than a vector with a max_capacity of n elements.
+ *
+ * 2. When using a distribution to access a vector, make sure that the
+ *    distribution has the range [0, vec.size() - 1]
+ *
+ * 3. If an istream's state is not good(), do not call seekg to change its
+ *    position.
+ *
+ * 4. After calling unique on a vector, remember to shrink the vector by
+ *    doing vec.shrink_to_fit();
+ * 5. If you become frustrated, you should step away from the computer
+ *    rather than keep working on the same problem.
  * -----------------------------------------------------------------------------
  */
 
@@ -42,8 +57,7 @@ template<class Iter> void write_to_file(ostream &os, Iter first, Iter last) {
 	os << "{ ";
 		
 	while (first != last) {
-		os << *first << " ";
-		++first;
+		os << *first++ << " ";
 	}
 
 	os << "}\n";
