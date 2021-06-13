@@ -47,6 +47,7 @@ void populate_vector(vector<string> &vec, ifstream &input, int size) {
 		cerr << "Warning: Not enough words to populate list "
 			 << "( " << actual << " word(s) instead of "
 			 << size << " word(s))\n";
+		temp_vec.shrink_to_fit();
 	}
 
 	vec = std::move(temp_vec);
@@ -63,7 +64,7 @@ template<class Iter> void write_to_file(ostream &os, Iter first, Iter last) {
 	os << "}\n";
 }
 
-int main(void) {
+int main() {
 	const string filename = "../Dictionary.txt";
 	ifstream file {filename, ios_base::in};
 	if (!file) {
@@ -98,12 +99,10 @@ int main(void) {
 		file.clear();
 		file.seekg(0);
 		populate_vector(vec, file, random_size);
-		vec.shrink_to_fit();
 		random_shuffle(vec.begin(), vec.end());
 		write_to_file(output, vec.begin(), vec.end());
 
 	}
-
 
 	sort(vec.begin(), vec.end());
 	dist = distribution{0, static_cast<int>(vec.size() - 1)};
@@ -114,8 +113,8 @@ int main(void) {
 		s.clear();
 		
 		for (int j = 0; j < i; j++) {
-			int i = random_int(dist);
-			s.insert(vec.at(i));
+			int rand = random_int(dist);
+			s.insert(vec.at(rand));
 		}
 		
 		write_to_file(output, s.begin(), s.end());		   		   	   
