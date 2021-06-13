@@ -22,7 +22,7 @@
 
 struct Test {
 	std::string label{};
-	int val{};
+	int expected{};
 	std::vector<int> seq;
 	bool result{};
 };

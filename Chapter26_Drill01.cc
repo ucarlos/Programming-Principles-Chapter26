@@ -31,7 +31,7 @@ int main(void) {
 
 		cout << "Contents of Test \"" << example.label << "\"\n";
 		cout << "Label: " << example.label << endl;
-		cout << "Test value: " << example.val << endl;
+		cout << "Test value: " << example.expected << endl;
 		cout << "List:\n";
 		for (const int &i : example.seq)
 			cout << "\t" << i << endl;

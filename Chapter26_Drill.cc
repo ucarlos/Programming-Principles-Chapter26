@@ -27,7 +27,7 @@ istream& operator>>(istream &is, Test &t) {
 
 	if (line.empty()) { // Handle an empty line gracefully
 		t.label = "empty-string";
-		t.val = 0;
+		t.expected = 0;
 		t.result = false;
 		t.seq = vector<int>{};
 		return is;
@@ -76,7 +76,7 @@ istream& operator>>(istream &is, Test &t) {
 
 	// Now assign:
 	t.label = label;
-	t.val = search_val;
+	t.expected = search_val;
 	t.result = result;
 	t.seq = std::move(temp_vec);
       	

@@ -39,11 +39,11 @@ int main(void) {
 		if (test.label == "empty-string")
 			continue;
 		
-		int result = simple_binary_search(test.seq, test.val);
+		int result = simple_binary_search(test.seq, test.expected);
 		if (result == -1)
-			cout << "Could not find " << test.val << " in ";
+			cout << "Could not find " << test.expected << " in ";
 		else
-			cout << "Found " << test.val << " in ";
+			cout << "Found " << test.expected << " in ";
 		
 		cout << print_sequence(test.seq) << "\n(Test result: " << test.result << ")\n\n";
 

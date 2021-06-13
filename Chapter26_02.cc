@@ -21,14 +21,14 @@ using namespace std;
 
 template <class T> struct Test {
 	std::string label{};
-	T val{};
+	T expected{};
 	std::vector<T> seq;
 	bool result{};
 };
 
 
 template<class T>istream& operator>>(istream &is, Test<T> &test) {
-	const static string pattern = R"(\{\s*[^\s]+\s*[^\s]+\s*\{(\s*[^\s]+)*\s*\}\s*[0-1]\s*\})";
+	const static string pattern = R"(\{\s*[^\s]+\s*[^\s]+\s*\d+\s*\{(\s*[^\s]+)*\s*\}\s*[0-1]\s*\})";
 
 	const regex expression{pattern};
 	
@@ -37,9 +37,10 @@ template<class T>istream& operator>>(istream &is, Test<T> &test) {
 
 	if (line.empty()) { // Handle empty line
 		test.label = "empty-string";
-		test.val = T{};
+		test.expected = T{};
 		test.result = false;
 		test.seq = vector<T>{};
+		return is;
 	}
 
 	
@@ -50,7 +51,7 @@ template<class T>istream& operator>>(istream &is, Test<T> &test) {
 		throw runtime_error(os.str());
 	}
 
-	static istringstream iss;
+	static stringstream iss;
 	iss.str(line);
 	
 	iss.ignore(256, '{');
@@ -61,17 +62,33 @@ template<class T>istream& operator>>(istream &is, Test<T> &test) {
 	T search_val{};
 	iss >> search_val;
 
+	int size;
+	iss >> size;
+
 	iss.ignore(256, '{');
 
 	vector<T> temp_vec;
+
 	for (T temp; iss >> temp;)
 		temp_vec.push_back(temp);
 
 	if (iss.bad()) // 
 		throw runtime_error("Error: istringstream is in bad state!");
 
-	if (iss.eof()) // Only if you modify the file while reading or something
-		throw runtime_error("Error: istringstream did not expect eof.");
+	if (iss.eof()) { // Only if you modify the file while reading or something
+
+		// Awful hack to allow strings to be read;
+		if (typeid(search_val) == typeid(string)) {
+
+			iss.clear();
+			if (!temp_vec.empty()) {
+				int size = temp_vec.size();
+				iss << temp_vec.at(size - 1);
+			}
+		}
+		else
+			throw runtime_error("Error: istringstream did not expect eof.");
+	}
 	
 	if (iss.fail())
 		iss.clear();
@@ -84,7 +101,7 @@ template<class T>istream& operator>>(istream &is, Test<T> &test) {
 
 	// Now assign:
 	test.label = label;
-	test.val = search_val;
+	test.expected = search_val;
 	test.result = result;
 	test.seq = std::move(temp_vec);
 
@@ -132,7 +149,7 @@ template<class T> void make_test(ostream &os, const string &label, T expected, i
 		os << i << " ";
 	}
 
-	os << "} " << found << "}";
+	os << "} " << found << " }";
 }
 
 template<class T> void make_test_batch(istream &input, ostream &output, int max_tests, vector<T> expected_list) {
@@ -171,7 +188,7 @@ template<class T> void make_test_batch(istream &input, ostream &output, int max_
 	}
 
 	// Create a distribution:
-	std::uniform_int_distribution<size_t> dist {0, (dictionary.size() / 2)};
+	std::uniform_int_distribution<size_t> dist {0, (dictionary.size() / 4)};
 	std::mt19937 merse;
 	
 	// Now create as many tests as needed:
@@ -183,25 +200,24 @@ template<class T> void make_test_batch(istream &input, ostream &output, int max_
 	
 }
 
-
-int main(void) {
-	string filename = "Dictionary.txt";
+void create_tests() {
+	string filename = "../Dictionary_Lite.txt";
 	ifstream dict {filename, ios_base::in};
 	if (!dict) {
 		cerr << "Error: Could not open \""<< filename << "\" !\n";
 		exit(EXIT_FAILURE);
 	}
 
-	filename = "Chapter26_02_String.txt";
+	filename = "../Chapter26_02_String.txt";
 	ofstream string_output {filename, ios_base::out};
-	
+
 	if (!string_output) {
 		cerr << "Error: Could not open \""<< filename << "\" !\n";
 		exit(EXIT_FAILURE);
 	}
 
 
-	filename = "Chapter26_02_Double.txt";
+	filename = "../Chapter26_02_Double.txt";
 	ofstream double_output {filename, ios_base::out};
 	if (!double_output) {
 		cerr << "Error: Could not open \""<< filename << "\" !\n";
@@ -210,7 +226,7 @@ int main(void) {
 
 	// Make a batch of string tests
 	cout << "Now making a batch of string tests...\n";
-	vector<string> expected_strings = {"The", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog", "forever"};   	
+	vector<string> expected_strings = {"The", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog", "forever"};
 	make_test_batch(dict, string_output, 10, expected_strings);
 
 
@@ -219,15 +235,83 @@ int main(void) {
 	std::uniform_real_distribution<double> dist{0, 1000};
 	std::mt19937 merse;
 	vector<double> expected_doubles;
-	
+
 	for (int i = 0; i < 10; i++)
 		expected_doubles.push_back(dist(merse));
-	
+
 	stringstream input_doubles;
 	for (int i = 0; i < 100; i++)
 		input_doubles << dist(merse) << " ";
 
 	make_test_batch(input_doubles, double_output, 10, expected_doubles);
 
-	cout << "Complete!" << endl;
+	cout << "Finished Creating Tests!" << endl;
+}
+
+
+template<class T> void print_sequence(vector<T> &vec) {
+	cout << "{ ";
+	for (const auto &i : vec)
+		cout << i << " ";
+	cout << "}\n";
+}
+void read_tests() {
+	// Read String tests:
+	string filename = "../Chapter26_02_String.txt";
+	
+	ifstream string_input {filename, ios_base::in};
+	if (!string_input) {
+		cerr << "Error: Could not open \""<< filename << "\" !\n";
+		exit(EXIT_FAILURE);
+	}
+
+	filename = "../Chapter26_02_Double.txt";
+	ifstream double_input {filename, ios_base::in};
+	if (!double_input) {
+		cerr << "Error: Could not open \""<< filename << "\" !\n";
+		exit(EXIT_FAILURE);
+	}
+
+	// Now read string tests:
+	for (Test<string> test; string_input >> test;) {
+		if (test.label == "empty-string") {
+			cout << "Skipping Empty String..\n";
+			continue;
+		}
+
+		int result = simple_binary_search(test.seq, test.expected);
+		if (result == -1)
+			cout << "Could not find \"" << test.expected << "\" in ";
+		else
+			cout << "Found " << test.expected << " in ";
+
+		print_sequence(test.seq);
+	}
+
+
+	// Now read double tests:
+	for (Test<double> test; double_input >> test;) {
+		if (test.label == "empty-string") {
+			cout << "Skipping Empty String..\n";
+			continue;
+		}
+
+		int result = simple_binary_search(test.seq, test.expected);
+		if (result == -1)
+			cout << "Could not find " << test.expected << " in ";
+		else
+			cout << "Found " << test.expected << " in ";
+
+		cout << "{ ";
+		for (const auto &i : test.seq)
+			cout << i << " ";
+		cout << "}" << endl;
+	}
+  
+}
+
+int main(void) {
+	create_tests();
+	cout << "Now testing tests...\n";
+	read_tests();
 }
