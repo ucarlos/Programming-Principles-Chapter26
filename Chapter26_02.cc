@@ -52,6 +52,7 @@ template<class T>istream& operator>>(istream &is, Test<T> &test) {
 	}
 
 	static stringstream iss;
+	iss.clear();
 	iss.str(line);
 	
 	iss.ignore(256, '{');
@@ -302,10 +303,7 @@ void read_tests() {
 		else
 			cout << "Found " << test.expected << " in ";
 
-		cout << "{ ";
-		for (const auto &i : test.seq)
-			cout << i << " ";
-		cout << "}" << endl;
+		print_sequence(test.seq);
 	}
   
 }
