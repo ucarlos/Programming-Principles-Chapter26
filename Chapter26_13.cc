@@ -13,7 +13,8 @@
 #include <string>
 #include <random>
 #include <algorithm>
-#include <ctime>
+// #include <ctime>
+#include <chrono>
 using namespace std;
 using distribution = std::uniform_int_distribution<unsigned>;
 
@@ -32,14 +33,18 @@ void sort_time(vector<string> &vec, distribution &dist,
 	size_t string_size;
 	for (int i = 0; i < size; i++) {
 		string_size = dist(merse);
-		vec.push_back(string("a", string_size));		
+		vec.emplace_back("a", string_size);
 	}
 
-	time_t start = time(nullptr);
+	// time_t start = time(nullptr);
+	auto start = chrono::system_clock::now();
 	sort(vec.begin(), vec.end());
-	time_t end = time(nullptr);
+	// time_t end = time(nullptr);
+	auto end = chrono::system_clock::now();
 
-	cout << "It takes " << (end - start) << " second(s) to sort "
+	cout << "It takes "
+		 << chrono::duration_cast<chrono::seconds>(end - start).count()
+		 << " second(s) to sort "
 		 << size << " strings.\n";
 
 }
@@ -58,6 +63,7 @@ int main(void) {
 	sort_time(vec, dist, merse, size0);
 
 	// Now resize the array:
+	vec.clear();
 	vec.resize(size1);
 	sort_time(vec, dist, merse, size1);
    

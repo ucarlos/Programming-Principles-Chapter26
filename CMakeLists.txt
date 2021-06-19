@@ -13,5 +13,7 @@ add_executable(Chapter26_Drill04 Chapter26_Drill04.cc Chapter26_Drill.cc)
 
 add_executable(Chapter26_01 Chapter26_01.cc Chapter26_Drill.cc)
 add_executable(Chapter26_02 Chapter26_02.cc)
+add_executable(Chapter26_03 Chapter26_03.cc)
 add_executable(Chapter26_12 Chapter26_12.cc)
 add_executable(Chapter26_13 Chapter26_13.cc)
+add_executable(Chapter26_14 Chapter26_14.cc)
