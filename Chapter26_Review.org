@@ -11,23 +11,61 @@
 #+LaTeX_HEADER: \usepackage{courier}
 * Problems
 ** Make a list of applications, each with a brief explanation of the worst thing that can happen if there is a bug; e.g., airplane control — crash: 231 people dead; $500M equipment loss.
++ Nuclear Power Plant: 50+ workers dead, possible radioactive leak or nuclear meltdown
++ Car Onboard Sensors: Car crash, passengers possibly injured or killed.
++ Telephone Switchers: Possible call redirection/overload, Loss of revenue  
++ Smartphone Software: Malfunctioning unit, loss of smartphone
 ** Why don’t we just prove our programs correct?
+Trying to prove programs correct may either be impossible for the programmer to accomplish in a given amount of time (Or even at all). There is also a possibility that the proof itself may be riddled with errors.
 ** What’s the difference between unit testing and system testing?
++ Unit Testing: Each Individual Function/Class is tested to make sure that it produces valid output for a given input.
++ System Testing: The entire system is tested to make sure it behaves as the specification requires in possible situations. For example, A system test of a nuclear Power Plant may test how the system works in sub-optimal conditions.   
 ** What is regression testing and why is it important?
+Regression Testing is testing done so that any programming changes have not adversely impacted any features. This is done in order to make sure that the application confirms to the specifications.
+
 ** What is the purpose of testing?
+Simply to make sure that the application or system works as it intends to, even when given invalid input or in extreme situations.
 ** Why doesn’t binary_search just check its requirements?
+In the case of binary_search, there is no way to determine if the given sequence is sorted, or even if the iterators are for the same sequence.
 ** If we can’t check for all possible errors, what kinds of errors do we primarily look for?
+We usually look for errors that
++ Are the most likely to occur
++ Have the possibly to cause the most damage and can bring the entire application down  
 ** Where are bugs most likely to occur in code manipulating a sequence of elements?
++ With the input (Sequence is not in a valid state, or does not follow the requirements of an function)
++ Sequence is modified in a function/class that might result in a invalid state
++ With output (Sequence is placed in a invalid state that might be used in another function/class)  
 ** Why is it a good idea to test for large values?
+Large values (and Large sequence) have the possibility to expose flaws in a given function (Logical or Performance) 
 ** Why do we often represent tests as data rather than as code?
-** Why and when would we use lots of tests based on random values?    
-** Why is it hard to test a program using a GUI?
+Hard coding tests does not scale when testing a function, and so simply storing them as data allows more tests to be read and run.
+** Why and when would we use lots of tests based on random values?
+Random values are easier to generate and can lead to errors that were not anticipated.
+** Why is it hard to test a program using a GUI? 
+I'm assuming the program is not a GUI, but the testing is done with a GUI.
+This would make it harder to generate tests on the same level as testing without one, and the GUI itself might be riddled with errors preventing it to generate additional tests, or given invalid output when a test is generated.
 ** What is needed to test a “unit” in isolation?
+A unit has to be independent of any other function/class in the application, and that any errors found within the unit are local to the unit itself and cannot bring the entire application down.
 ** What is the connection between testability and portability?
+The tests must be able to run and achieve the same output regardless of the system that it is running (Provided that the system is compatible with the application and meets the application's requirements)
 ** What makes testing a class harder than testing a function?
+Testing a class can involve more functions or variables than a single function, and the class could impact more of the application, especially if the class is in a inheritance hierarchy (Base or derived class).
 ** Why is it important that tests be repeatable?
+It makes it easier to test any changes done to the application.
 ** What can a tester do when finding that a “unit” relies on unchecked assumptions (pre-conditions)?
+The tester can provide additional documentation on the behavior of a unit, or attempt to address those unchecked assumption by notifying a developer.
 ** What can a designer/implementer do to improve testing?
++ Enable a debug mode to make it easier for testers to insert tests into a unit
++ Provide coherent  documentation specifying the requirements or pre-conditions needed to use the unit
++ Unit should be able to handle invalid input in a way that does not break the application
++ Minimize any Dependencies used by a unit, and explicitly mention what dependencies are used.
++ Manage any resources used in a clean and efficient manner.  
 ** How does testing differ from debugging?
++ Debugging: Is done when necessary to remove known bugs and implement any features
++ Testing: Is done to determine any possible errors or bugs that can arise during the application's execution.  
 ** When does performance matter?
+Performance matters when the environment that the application is running in is limited in resources and requires efficiency in its units.
 ** Give two (or more) examples of how to (easily) create bad performance problems.
++ Use of non-efficient functions repeatedly (Such as strlen() on a large string repeatedly)
++ Time complexity of an algorithm does not scale well with large inputs or repeatedly
++ Inputs or post-conditions are modified repeatedly or in a inefficient way.
